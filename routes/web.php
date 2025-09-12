@@ -16,6 +16,9 @@ Route::get('/', function () {
         ],
     ]);
 });
+Route::get('/catalogue', function () {
+    return Inertia::render('Catalogue');
+})->name('catalogue');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

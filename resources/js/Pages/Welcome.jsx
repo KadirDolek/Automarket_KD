@@ -19,8 +19,8 @@ export default function Welcome({ laravelVersion, phpVersion }) {
                     <header>
                             <Navbar/>
                         </header>
-                        <section>
-                            <h1 className='text-white justify-center flex h-screen'>
+                        <section className='h-screen'>
+                            <h1 className="text-white text-xl flex justify-center">
                                 Page Home 
                             </h1>
                         </section>
