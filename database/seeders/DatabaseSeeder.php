@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
     foreach (Role::all() as $role) {
                 User::factory()->create([
                 'role_id' => $role->id,
+                'password' => 'password'
         ]);
     }
 
