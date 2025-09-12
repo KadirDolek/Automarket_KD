@@ -4,7 +4,7 @@ export default function Navbar(){
     const { auth } = usePage().props;
 
     return(
-        <nav>
+        <nav className="flex justify-end p-2">
             {auth?.user ? (
                 <Link
                     href={route('dashboard')}
