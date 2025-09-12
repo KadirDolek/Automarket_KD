@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Car;
+use App\Models\Role;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -13,11 +15,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+    $this->call([
+        RoleSeeder::class,
+        FuelSeeder::class,
+        BrandSeeder::class,
+        AvatarSeeder::class,
+    ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+    foreach (Role::all() as $role) {
+                User::factory()->create([
+                'role_id' => $role->id,
         ]);
     }
+
+    Car::factory(20)->create();
+}
 }
