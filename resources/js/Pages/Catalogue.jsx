@@ -20,7 +20,10 @@ export default function Catalogue(){
                 <Navbar/>
             </div>
             <div className="h-screen">
-                <h2 className="text-white text-xl flex justify-center">Page Catalogue</h2>
+                <h2 className="text-white text-xl flex justify-center m-4 pb-6">Page Catalogue</h2>
+                <div className="text-white text-xl flex justify-center">
+                    Placement de voiture ici
+                </div>
             </div>
             <Footer/>
         </section>

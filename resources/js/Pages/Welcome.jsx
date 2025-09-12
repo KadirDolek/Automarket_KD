@@ -15,16 +15,12 @@ export default function Welcome({ laravelVersion, phpVersion }) {
                     className="absolute -left-20 top-0 max-w-[877px] max-h-[850px]"
                     src="https://laravel.com/assets/img/welcome/background.svg"
                 />
-                <div className="relative flex p-3 h-auto flex-col selection:bg-[#FF2D20] selection:text-white">
-                    <header>
-                            <Navbar/>
-                        </header>
-                        <section className='h-screen'>
+                        <section className='h-screen items-center flex justify-center'>
                             <h1 className="text-white text-xl flex justify-center">
-                                Page Home 
+                                <Navbar/>
                             </h1>
                         </section>
-                </div>
+                
             </div>
             <Footer/>
         </>

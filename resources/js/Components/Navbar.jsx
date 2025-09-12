@@ -1,5 +1,6 @@
 import { Link, usePage } from "@inertiajs/react"
 
+
 export default function Navbar() {
     const { auth } = usePage().props;
     
