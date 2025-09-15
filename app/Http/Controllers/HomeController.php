@@ -12,4 +12,9 @@ class HomeController extends Controller
         $cars = Car::with(['brand', 'fuel'])->get();
         return Inertia::render('Home', compact('cars'));
     }
+
+    public function show($id){
+        $cars = Car::with(['brand', 'fuel', 'user'])->findOrFail($id);
+        return Inertia::render('CarShow', compact('cars'));
+    }
 }

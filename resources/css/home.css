@@ -29,7 +29,7 @@
   overflow: hidden;
   width: 100%;
   max-width: 450px;
-  height: 350px; 
+  height: 250px; 
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   margin-bottom: 20px;
   transition: transform 0.2s ease;
@@ -105,6 +105,9 @@
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
+  position: absolute;
+  top: 15px;
+  right: 15px;
 }
 
 .car-badgeall {

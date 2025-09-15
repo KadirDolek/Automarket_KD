@@ -10,14 +10,14 @@ function CarCard({ car }) {
           alt={`${car.brand.name} ${car.model}`} 
           className="car-image"
         />
+         <span className={`car-badge ${car.etat === 'neuf' ? 'new' : 'used'}`}>
+            {car.etat}
+          </span>
       </div>
       
       <div className="car-info">
         <div className="car-header">
           <h2>{car.brand.name} {car.model}</h2>
-          <span className={`car-badge ${car.etat === 'neuf' ? 'new' : 'used'}`}>
-            {car.etat}
-          </span>
         </div>
         
         <div className='car-details'>

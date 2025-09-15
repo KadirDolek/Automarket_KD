@@ -10,7 +10,7 @@ nav{
     align-items: center;
     gap: 30px;
     border-radius: 10px;
-    position: fixed;
+    position:absolute;
     top: 20px;
     left: center;
 }
