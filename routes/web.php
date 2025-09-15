@@ -6,7 +6,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
+Route::get('/Welcome', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -23,13 +23,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    Route::get('/create', [HomeController::class, 'carCreate'])->name('create');
     Route::post('/store', [HomeController::class, 'store'])->name('store');
-
+    Route::get('/edit/{id}', [HomeController::class, 'carEdit'])->name('carEdit');
+    Route::put('/update/{id}', [HomeController::class, 'carUpdate'])->name('carUpdate');
+    Route::delete('/delete/{id}', [HomeController::class, 'carDestroy'])->name('carDestroy');
 });
 
-Route::get('/home',[HomeController::class, 'home'])->name('home');
+Route::get('/',[HomeController::class, 'home'])->name('home');
 Route::get('/home/{id}', [HomeController::class, 'show'])->name('show');
-
-Route::get('/create', [HomeController::class, 'create'])->name('create');
 
 require __DIR__.'/auth.php';

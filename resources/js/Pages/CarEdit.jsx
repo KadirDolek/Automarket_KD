@@ -3,44 +3,44 @@ import { useForm } from '@inertiajs/react'
 import Nav from '@/Components/Nav'
 import '../../css/carCreate.css'
 
-export default function CarCreate({ brands, fuels, auth }) {
-    const { data, setData, post, processing, errors } = useForm({
-        brand_id: '',      
-        fuel_id: '',       
-        model: '',        
-        etat: 'occasion',
-        annee: new Date().getFullYear(),
-        kilometrage: 0,
-        abs: false,
+function CarEdit({ car, brands, fuels, auth }) {
+    const { data, setData, put, processing, errors } = useForm({
+        brand_id: car.brand_id,
+        fuel_id: car.fuel_id,
+        model: car.model,
+        etat: car.etat,
+        annee: car.annee,
+        kilometrage: car.kilometrage,
+        abs: car.abs,
         
-        image1_path: '',
+        image1_path: car.image1_path || '',
         image1_file: null,
-        image2_path: '',
+        image2_path: car.image2_path || '',
         image2_file: null,
-        image3_path: '',
+        image3_path: car.image3_path || '',
         image3_file: null,
-        image4_path: '',
+        image4_path: car.image4_path || '',
         image4_file: null,
         
-        jantes: '16',
-        sellerie: 'Tissus',
-        couleur: '#000000',
-        type: 'BERLINE',
-        cylindree: '1.5l',
-        prix: 0,
-        description: ''
+        jantes: car.jantes,
+        sellerie: car.sellerie,
+        couleur: car.couleur,
+        type: car.type,
+        cylindree: car.cylindree,
+        prix: car.prix,
+        description: car.description
     })
 
     const [imageTypes, setImageTypes] = useState({
-        image1: 'file',
-        image2: 'file',
-        image3: 'file',
-        image4: 'file'
+        image1: car.image1_path ? 'url' : 'file',
+        image2: car.image2_path ? 'url' : 'file',
+        image3: car.image3_path ? 'url' : 'file',
+        image4: car.image4_path ? 'url' : 'file'
     })
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        post('/store')
+        put(`/update/${car.id}`)
     }
 
     const handleFuelChange = (fuelId) => {
@@ -58,8 +58,18 @@ export default function CarCreate({ brands, fuels, auth }) {
             [`image${imageNum}`]: type
         }))
         
-        setData(`image${imageNum}_path`, '')
-        setData(`image${imageNum}_file`, null)
+        if (type === 'file') {
+            // Quand on passe à file, on garde l'image existante comme fallback
+            setData(`image${imageNum}_file`, null)
+            // Ne pas vider le path pour éviter les erreurs de validation
+        } else {
+            // Quand on passe à URL, vider le file
+            setData(`image${imageNum}_file`, null)
+            // Si pas d'URL et pas d'image existante, remettre l'URL existante
+            if (!data[`image${imageNum}_path`] && car[`image${imageNum}_path`]) {
+                setData(`image${imageNum}_path`, car[`image${imageNum}_path`])
+            }
+        }
     }
 
     const handleFileChange = (imageNum, file) => {
@@ -69,11 +79,11 @@ export default function CarCreate({ brands, fuels, auth }) {
     return (
         <div className="car-create">
             <div className='navigation'>
-                 <Nav auth={auth}/>
+                <Nav auth={auth} />
             </div>
             
             <div className="create-container">
-                <h1>Vendre ma voiture</h1>
+                <h1>Modifier ma voiture</h1>
                 
                 <form onSubmit={handleSubmit} className="car-form" encType="multipart/form-data">
                     <div className="form-section">
@@ -95,7 +105,7 @@ export default function CarCreate({ brands, fuels, auth }) {
                         </div>
 
                         <div className="form-group">
-                            <label>Modèle</label>
+                            <label>Modèle *</label>
                             <input 
                                 type="text" 
                                 value={data.model}
@@ -202,7 +212,6 @@ export default function CarCreate({ brands, fuels, auth }) {
                                     <small className="helper-text">Automatiquement défini sur NONE pour les véhicules électriques</small>
                                 )}
                             </div>}
-                           
                         </div>
 
                         <div className="form-row">
@@ -274,11 +283,23 @@ export default function CarCreate({ brands, fuels, auth }) {
 
                     <div className="form-section">
                         <h2>Photos du véhicule</h2>
-                        <p className="section-description">Ajoutez des photos de qualité pour attirer plus d'acheteurs</p>
+                        <p className="section-description">Modifiez les photos de votre véhicule</p>
                         
                         {[1, 2, 3, 4].map(num => (
                             <div key={num} className="image-upload-group">
                                 <label>Photo {num} {num === 1 ? '(obligatoire)' : '(optionnelle)'}</label>
+                                
+                                {/* Afficher l'image actuelle si elle existe */}
+                                {data[`image${num}_path`] && imageTypes[`image${num}`] === 'url' && (
+                                    <div className="current-image">
+                                        <img 
+                                            src={data[`image${num}_path`]} 
+                                            alt={`Image ${num} actuelle`}
+                                            style={{width: '100px', height: '100px', objectFit: 'cover', marginBottom: '10px'}}
+                                        />
+                                        <p>Image actuelle</p>
+                                    </div>
+                                )}
                                 
                                 <div className="image-type-selector">
                                     <label>
@@ -288,7 +309,7 @@ export default function CarCreate({ brands, fuels, auth }) {
                                             checked={imageTypes[`image${num}`] === 'file'}
                                             onChange={() => handleImageTypeChange(num, 'file')}
                                         />
-                                        Uploader un fichier
+                                        Uploader un nouveau fichier
                                     </label>
                                     <label>
                                         <input 
@@ -297,24 +318,23 @@ export default function CarCreate({ brands, fuels, auth }) {
                                             checked={imageTypes[`image${num}`] === 'url'}
                                             onChange={() => handleImageTypeChange(num, 'url')}
                                         />
-                                        Lien URL
+                                        URL
                                     </label>
                                 </div>
 
                                 {imageTypes[`image${num}`] === 'file' ? (
                                     <input 
                                         type="file" 
-                                        accept="image/jpeg,image/png,image/jpg,image/gif"
+                                        accept="image/jpeg,image/png,jpg,gif"
                                         onChange={e => handleFileChange(num, e.target.files[0])}
-                                        required={num === 1}
                                     />
                                 ) : (
                                     <input 
                                         type="url" 
                                         value={data[`image${num}_path`]}
                                         onChange={e => setData(`image${num}_path`, e.target.value)}
-                                        placeholder={`https://exemple.com/photo${num}.jpg`}
-                                        required={num === 1}
+                                        placeholder={car[`image${num}_path`] || `https://exemple.com/photo${num}.jpg`}
+                                        required={num === 1 && !car[`image${num}_path`] && !data[`image${num}_path`]}
                                     />
                                 )}
                                 
@@ -341,7 +361,7 @@ export default function CarCreate({ brands, fuels, auth }) {
                     </div>
 
                     <button type="submit" disabled={processing} className="submit-btn">
-                        {processing ? 'Publication en cours...' : 'Publier mon annonce'}
+                        {processing ? 'Mise à jour en cours...' : 'Mettre à jour ma voiture'}
                     </button>
                 </form>
             </div>
@@ -349,3 +369,4 @@ export default function CarCreate({ brands, fuels, auth }) {
     )
 }
 
+export default CarEdit

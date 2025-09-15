@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
-import { Link } from '@inertiajs/react'
-import '../../css/show.css'
+import { Link, usePage } from '@inertiajs/react'
 import Nav from '@/Components/Nav'
+import { usePermissions } from '@/Components/PermissionHelper'
+import '../../css/Show.css'
 
 function CarShow({ cars: car }) {
+    const { auth } = usePage().props
+    const permissions = usePermissions(auth)
     const [currentImage, setCurrentImage] = useState(0)
     
     const images = [
@@ -28,10 +31,20 @@ function CarShow({ cars: car }) {
 
    console.log(taeg_denominateur);
 
+   const canEdit = auth?.user && (
+    car.user_id === auth.user.id || 
+    (auth.user.role && ['admin', 'moderateur'].includes(auth.user.role))
+)
+
+    console.log('Auth user:', auth.user)
+    console.log('Car user_id:', car.user_id)
+    console.log('User role:', auth.user?.role)
+    console.log('Can edit:', canEdit)
+
     return (
         <div className="car-show">
          <div className='navigation'>
-                 <Nav/>
+                 <Nav auth={auth}/>
         </div>
             <div className="back-button">
                 <Link href="/home">← Retour au catalogue</Link>
@@ -112,7 +125,7 @@ function CarShow({ cars: car }) {
                     <div className="equipment-section">
                         <h3>Équipements</h3>
                         <div className="equipment-grid">
-                            {car.abs && <div className="equipment-item">✓ ABS</div>}
+                            {car.abs !==0 && <div className="equipment-item">✓ ABS</div>}
                             <div className="equipment-item">✓ {car.fuel.fuel}</div>
                             <div className="equipment-item">✓ Jantes {car.jantes}"</div>
                             <div className="equipment-item">✓ Sellerie {car.sellerie}</div>
@@ -146,6 +159,33 @@ function CarShow({ cars: car }) {
                     </div>
                 </div>
             </div>
+
+            {permissions.canEditCar(car) && (
+                <div className="car-actions">
+                    <Link href={`/edit/${car.id}`} className="edit-btn">
+                        Modifier
+                    </Link>
+                    <Link 
+                        href={`/delete/${car.id}`} 
+                        method="delete"
+                        as="button"
+                        className="delete-btn"
+                        onClick={(e) => {
+                            if (!confirm('Êtes-vous sûr de vouloir supprimer cette voiture ?')) {
+                                e.preventDefault()
+                            }
+                        }}
+                    >
+                        Supprimer
+                    </Link>
+                </div>
+            )}
+
+            {permissions.isModerator && (
+                <div className="admin-actions">
+                    <span className="admin-badge">Actions modération</span>
+                </div>
+            )}
         </div>
     )
 }

@@ -5,12 +5,12 @@ import Nav from '@/Components/Nav'
 import { Link } from '@inertiajs/react'
 
 
-function Home({cars}) {
+function Home({cars, auth}) {
     return (
 
         <div className='home'>
             <div className='navigation'>
-                 <Nav/>
+                 <Nav auth={auth}/>
             </div>
            
              <div className="car-grid">
