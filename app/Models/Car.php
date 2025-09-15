@@ -38,7 +38,7 @@ class Car extends Model
         return $this->belongsTo(Fuel::class);
     }
 
-    // Mutator pour forcer cylindrée à NONE si électrique
+    //  NONE si électrique
     public function setCylindreeAttribute($value)
     {
         if ($this->fuel_id && Fuel::find($this->fuel_id)->fuel === 'Electrique') {
@@ -47,4 +47,19 @@ class Car extends Model
             $this->attributes['cylindree'] = $value;
         }
     }
+        
+//     public function getEtatFormattedAttribute()
+//     {
+//         return $this->etat === 'neuf' ? 'Neuf' : 'Occasion';
+//     }
+
+//     public function getPrixFormattedAttribute()
+//     {
+//         return number_format($this->prix, 2, ',', ' ') . ' €';
+//     }
+
+//     public function getKilometrageFormattedAttribute()
+//     {
+//         return number_format($this->kilometrage, 0, '', ' ') . ' km';
+//     }
 }
