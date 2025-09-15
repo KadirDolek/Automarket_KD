@@ -10,9 +10,29 @@ use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
-    public function home() {
-        $cars = Car::with(['brand', 'fuel'])->get();
-        return Inertia::render('Home', compact('cars'));
+    public function home(Request $request) {
+        $query = Car::with(['brand', 'fuel']);
+
+        if ($request->filled('brand_id')) {
+            $query->where('brand_id', $request->brand_id);
+        }
+
+        if ($request->filled('fuel_id')) {
+            $query->where('fuel_id', $request->fuel_id);
+        }
+
+        $cars = $query->get();
+
+        $brands = Brand::all();
+        $fuels = Fuel::all();
+
+        return Inertia::render('Home',  [
+            'cars' => $cars,
+            'brands' => $brands,
+            'fuels' => $fuels,
+            'currentBrand' => $request->brand_id,
+            'currentFuel' => $request->fuel_id
+        ]);
     }
 
     public function show($id){
@@ -151,13 +171,11 @@ class HomeController extends Controller
             ]);
         }
 
-        // Gestion intelligente des images
         for ($i = 1; $i <= 4; $i++) {
             $fileKey = "image{$i}_file";
             $pathKey = "image{$i}_path";
             
             if ($request->hasFile($fileKey)) {
-                // Nouveau fichier uploadé
                 $oldImage = $car->{$pathKey};
                 if ($oldImage && str_starts_with($oldImage, '/storage/')) {
                     Storage::disk('public')->delete(str_replace('/storage/', '', $oldImage));
@@ -169,18 +187,15 @@ class HomeController extends Controller
                 $validated[$pathKey] = Storage::url($path);
                 
             } else if (!empty($validated[$pathKey]) && $validated[$pathKey] !== $car->{$pathKey}) {
-                // Nouvelle URL fournie (différente de l'existante)
-                // $validated[$pathKey] est déjà définie et sera utilisée
+      
                 
             } else {
-                // Pas de nouveau fichier/URL ou URL identique = garder l'existante
                 $validated[$pathKey] = $car->{$pathKey};
             }
             
             unset($validated[$fileKey]);
         }
 
-        // Vérifier qu'au final on a au moins une image1
         if (empty($validated['image1_path'])) {
             return back()->withErrors([
                 'image1_path' => 'Au moins une image principale est obligatoire.'

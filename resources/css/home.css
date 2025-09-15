@@ -1,7 +1,12 @@
 .home{
     height: 100%;
     width: 100%;
-    background-color: rgb(27, 27, 28);
+    background: linear-gradient(107deg,
+        rgba(250,250,251,1) 0%,
+        rgb(208, 209, 211) 35%,
+        rgb(216, 218, 221) 70%,
+        rgb(192, 193, 194) 100%);
+    background-blend-mode: normal;
 }
 
 .navigation{
@@ -19,25 +24,28 @@
   padding: 24px;
   padding-left: 60px;
   padding-right: 60px;
-  margin-top: 100px;
+  margin-top: 30px;
 }
 
+/* card: soft metallic look */
 .car-card {
-  background-color: #f5f5f5;
+  background: linear-gradient(180deg, #ffffff 0%, #f3f4f6 60%, #e9ebee 100%);
   border-radius: 16px;
-  border: 4px rgb(46, 47, 51) solid;
+  border: 1px solid rgba(46,47,51,0.08);
   overflow: hidden;
   width: 100%;
   max-width: 450px;
   height: 250px; 
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 24px rgba(14, 18, 22, 0.06);
   margin-bottom: 20px;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   position: relative;
 }
 
+/* subtle hover sheen */
 .car-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(12, 14, 18, 0.12);
 }
 
 .car-image-container {
@@ -98,6 +106,20 @@
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
+/* metallic badge */
+.car-badgeall {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    background: linear-gradient(180deg, #e7e9eb 0%, #cfcfd1 100%);
+    color: #0b0b0c;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+}
+
 .car-badge {
   display: inline-block;
   padding: 4px 10px;
@@ -108,17 +130,6 @@
   position: absolute;
   top: 15px;
   right: 15px;
-}
-
-.car-badgeall {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    background-color: #c4c2c2;
-    color: rgb(10, 0, 0);
 }
 
 .car-badge.new {
@@ -136,4 +147,184 @@
   font-size: 16px;
   margin: 0;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.filters-bar {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.filters-container {
+    background: linear-gradient(90deg,
+        #0b1220 0%,
+        #131a23 35%,
+        #1f2a33 65%,
+        #0f1720 100%);
+    border-radius: 12px;
+    display: flex;
+    padding: 12px 18px;
+    gap: 18px;
+    align-items: center;
+    justify-content:space-around;
+    width: 600px;
+    border: 1px solid rgba(255,255,255,0.04);
+    box-shadow: 0 8px 24px rgba(2,6,23,0.5), inset 0 1px 0 rgba(255,255,255,0.02);
+    color: #eef6ff;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.filter-label {
+    font-weight: bold;
+    color: #495057;
+    font-size: 14px;
+}
+
+.filter-group .filter-label {
+    color: #e6f0fb;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    border: 2px solid #dee2e6;
+    background-color: white;
+    color: #495057;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* buttons adjusted for dark background */
+.filter-btn {
+    padding: 8px 14px;
+    border: 1px solid rgba(255,255,255,0.06);
+    background-color: rgba(255,255,255,0.04);
+    color: #e8f1ff;
+    border-radius: 16px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    backdrop-filter: blur(2px);
+}
+
+.filter-btn:hover {
+    border-color: #ffc107;
+    background-color: #fff3cd;
+}
+
+/* select styles for dark nav look */
+.filter-select {
+    padding: 8px 12px;
+    border: 1px solid rgba(255,255,255,0.06);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    color: #eef6ff;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    min-width: 180px;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.filter-select {
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    color: #eef6ff;               
+    -webkit-appearance: none;
+    appearance: none;
+    padding: 8px 36px 8px 12px;  
+    background-image: linear-gradient(45deg, transparent 50%, #eef6ff 50%),
+                      linear-gradient(135deg, #eef6ff 50%, transparent 50%);
+    background-position: calc(100% - 18px) calc(1em + 2px), calc(100% - 13px) calc(1em + 2px);
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+}
+.filter-select option,
+.filters-container .filter-select option {
+    background-color: #1f2a33;    
+    color: #eef6ff;             
+}
+
+.filter-select option[value=""],
+.filters-container .filter-select option[value=""] {
+    color: #9da9b3;
+}
+
+.filter-select option:hover,
+.filter-select option:checked {
+    background-color: #27414a;
+    color: #ffffff;
+}
+
+
+.filters-container .filter-select {
+    border: 1px solid rgba(255,255,255,0.06);
+}
+
+.clear-filters-btn {
+    padding: 8px 14px;
+    background-color: rgba(255,255,255,0.06);
+    color: #ffdede;
+    border: 1px solid rgba(255,255,255,0.04);
+    border-radius: 12px;
+}
+
+.clear-filters-btn:hover {
+    background-color: rgba(255,255,255,0.08);
+    color: #fff;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+@media (max-width: 768px) {
+    .filters-container {
+        flex-direction: column;
+        gap: 12px;
+        padding: 10px;
+    }
+
+    .filter-select {
+        min-width: 100%;
+    }
+}
+
+.no-results {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6c757d;
+}
+
+.no-results p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .filters-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .filter-group {
+        justify-content: center;
+    }
 }
