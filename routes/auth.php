@@ -1,3 +1,4 @@
+// routes/auth.php
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;

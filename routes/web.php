@@ -1,33 +1,46 @@
+// routes/web.php
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\CarController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-        'auth' => [
-            'user' => auth()->user(),
-        ],
-    ]);
-});
-Route::get('/catalogue', function () {
-    return Inertia::render('Catalogue');
-})->name('catalogue');
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
+// Inclure les routes d'authentification
 require __DIR__.'/auth.php';
+
+// Page d'accueil
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Route dashboard (si elle n'existe pas déjà)
+Route::get('/dashboard', function () {
+    return inertia('Dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+// Catalogue public
+Route::get('/catalogue', [CarController::class, 'index'])->name('cars.index');
+Route::get('/cars/{car}', [CarController::class, 'show'])->name('cars.show');
+
+// Routes nécessitant une authentification
+Route::middleware(['auth'])->group(function () {
+    // Création de voiture - accessible à ceux qui ont la permission create-cars
+    Route::get('/cars/create', [CarController::class, 'create'])->middleware('can:create-cars')->name('cars.create');
+    Route::post('/cars', [CarController::class, 'store'])->middleware('can:create-cars')->name('cars.store');
+    
+    // Contact vendeur - accessible à ceux qui ont la permission contact-seller
+    Route::post('/contact-seller/{car}', [CarController::class, 'contactSeller'])->middleware('can:contact-seller')->name('cars.contact');
+    
+    // Suppression de voitures - accessible à ceux qui ont la permission delete-cars
+    Route::delete('/cars/{car}', [CarController::class, 'destroy'])->middleware('can:delete-cars')->name('cars.destroy');
+    
+    // Routes admin - accessibles à ceux qui ont les permissions manage-users et manage-brands
+    Route::middleware('can:manage-users')->group(function () {
+        Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
+        Route::put('/admin/users/{user}/role', [UserController::class, 'updateRole'])->name('admin.users.updateRole');
+    });
+    
+    Route::middleware('can:manage-brands')->group(function () {
+        Route::resource('/admin/brands', BrandController::class)->except(['show']);
+    });
+});

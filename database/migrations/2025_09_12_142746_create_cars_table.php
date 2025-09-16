@@ -25,7 +25,7 @@ return new class extends Migration
             $table->enum('sellerie', ['Cuir', 'Tissus']);
             $table->string('couleur', 7);
             $table->enum('type', ['4X4', 'SUV', 'BREAK', 'LUDOSPACE', 'VAN', 'BERLINE']);
-            $table->enum('cylindree', ['1l', '1.2l', '1.5l', '1.8l', '2l', '3l', 'NONE'])->default('NONE');
+            $table->decimal('cylindree', 3, 1)->nullable()->default(null);
             $table->decimal('prix', 12, 2);
             $table->text('description');
             $table->string('image1_path');
@@ -36,8 +36,7 @@ return new class extends Migration
         });
 
         // Ajout de la contrainte CHECK après création de la table
-        DB::statement('ALTER TABLE cars ADD CONSTRAINT check_cars_annee CHECK (annee BETWEEN 1975 AND YEAR(CURDATE()))');
-   
+        DB::statement('ALTER TABLE cars ADD CONSTRAINT check_cars_annee CHECK (annee BETWEEN 1975 AND 2025)');
     }
 
     /**
