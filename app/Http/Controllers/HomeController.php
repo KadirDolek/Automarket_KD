@@ -9,12 +9,13 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $latestCars = Car::with(['brand', 'fuel'])
+        // Récupérer les 6 dernières voitures pour la page d'accueil
+        $latestCars = Car::with(['brand', 'fuel', 'user'])
             ->latest()
             ->take(6)
             ->get();
             
-        return Inertia::render('Catalogue', [
+        return Inertia::render('Welcome', [
             'latestCars' => $latestCars
         ]);
     }

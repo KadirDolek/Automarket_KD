@@ -109,7 +109,7 @@ class CarController extends Controller
             'sellerie' => 'required|in:Cuir,Tissus',
             'couleur' => 'required|string|max:7',
             'type' => 'required|in:4X4,SUV,BREAK,LUDOSPACE,VAN,BERLINE',
-            'cylindree' => 'required|in:1l,1.2l,1.5l,1.8l,2l,3l,NONE',
+            'cylindree' => 'required|numeric|in:1,1.2,1.5,1.8,2,3',
             'prix' => 'required|numeric|min:0',
             'description' => 'required|string',
             'image1_path' => 'required|image|max:2048',

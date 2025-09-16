@@ -1,7 +1,7 @@
-// routes/web.php
 <?php
 
 use App\Http\Controllers\CarController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\HomeController;
@@ -20,7 +20,8 @@ Route::get('/dashboard', function () {
 
 // Catalogue public
 Route::get('/catalogue', [CarController::class, 'index'])->name('cars.index');
-Route::get('/cars/{car}', [CarController::class, 'show'])->name('cars.show');
+
+Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
 
 // Routes nécessitant une authentification
 Route::middleware(['auth'])->group(function () {
@@ -33,14 +34,22 @@ Route::middleware(['auth'])->group(function () {
     
     // Suppression de voitures - accessible à ceux qui ont la permission delete-cars
     Route::delete('/cars/{car}', [CarController::class, 'destroy'])->middleware('can:delete-cars')->name('cars.destroy');
-    
+});
     // Routes admin - accessibles à ceux qui ont les permissions manage-users et manage-brands
     Route::middleware('can:manage-users')->group(function () {
-        Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
-        Route::put('/admin/users/{user}/role', [UserController::class, 'updateRole'])->name('admin.users.updateRole');
-    });
+    Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
+    Route::get('/admin/users/create', [UserController::class, 'create'])->name('admin.users.create');
+    Route::post('/admin/users', [UserController::class, 'store'])->name('admin.users.store');
+    Route::get('/admin/users/{user}', [UserController::class, 'show'])->name('admin.users.show');
+    Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+    Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+    Route::put('/admin/users/{user}/role', [UserController::class, 'updateRole'])->name('admin.users.updateRole');
+    Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+});
     
+Route::get('/cars/{car}', [CarController::class, 'show'])->name('cars.show');
+
     Route::middleware('can:manage-brands')->group(function () {
-        Route::resource('/admin/brands', BrandController::class)->except(['show']);
-    });
+        Route::get('/admin/brands/{brand}', [BrandController::class, 'show'])->name('admin.brands.show');
+    Route::resource('/admin/brands', BrandController::class)->except(['show']);
 });

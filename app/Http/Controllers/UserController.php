@@ -81,17 +81,17 @@ class UserController extends Controller
      * Afficher les détails d'un utilisateur
      */
     public function show(User $user)
-    {
-        if (!Gate::allows('manage-users')) {
-            abort(403, 'Accès non autorisé.');
+        {
+            if (!Gate::allows('manage-users')) {
+                abort(403, 'Accès non autorisé.');
+            }
+            
+            $user->load('role', 'cars.brand', 'cars.fuel');
+            
+            return Inertia::render('Admin/Users/Show', [
+                'user' => $user
+            ]);
         }
-        
-        $user->load('role', 'cars.brand', 'cars.fuel');
-        
-        return Inertia::render('Admin/Users/Show', [
-            'user' => $user
-        ]);
-    }
 
     /**
      * Afficher le formulaire d'édition d'un utilisateur
