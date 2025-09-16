@@ -5,11 +5,20 @@ import '../../css/nav.css'
 function Nav({ auth }) {
     const [open, setOpen] = useState(false)
 
-    // CORRIGÉ: Vérifier si l'utilisateur est admin OU modo
     const isAdminOrMod = auth?.user?.role?.role && ['admin', 'modo'].includes(auth.user.role.role);
 
     return (
         <nav>
+            <div className="logo-container">
+                <Link href={route('home')} className="logo-link">
+                    <img 
+                        src="/storage/logo.png" 
+                        alt="Auto Market" 
+                        className="logo"
+                    />
+                </Link>
+            </div>
+
             <div className='nav'>
                 <Link className='link' href={route('home')}>Catalogue</Link>
                 <Link href={route('create')}>Vendez Votre Voiture</Link>
@@ -55,7 +64,7 @@ function Nav({ auth }) {
                                     zIndex: 40
                                 }}
                             >
-                                <Link className="dropdown-item" href={route('profile.edit')} role="menuitem">Mon profil</Link>
+                                <Link className="dropdown-item drop" href={route('profile.edit')} role="menuitem">Mon profil</Link>
                                 <Link
                                     className="dropdown-item danger"
                                     href={route('logout')}

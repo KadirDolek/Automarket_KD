@@ -1,0 +1,244 @@
+.profile-container {
+    min-height: 100vh;
+    background: linear-gradient(107deg,
+        rgba(250,250,251,1) 0%,
+        rgb(208,209,211) 35%,
+        rgb(216,218,221) 70%,
+        rgb(192,193,194) 100%);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    padding: 20px 0;
+}
+
+.profile-header {
+    max-width: 1200px;
+    margin: 0 auto 32px;
+    padding: 0 20px;
+}
+
+.profile-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+}
+
+.profile-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.profile-section {
+    background: linear-gradient(180deg, #ffffff 0%, #f3f4f6 60%, #e9ebee 100%);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 8px 24px rgba(14,18,22,0.06);
+    border: 1px solid rgba(34,36,38,0.04);
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(34,36,38,0.08);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(34,36,38,0.12);
+    background: linear-gradient(180deg, #fff, #f9fafb);
+    color: #111827;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    max-width: 400px;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    background: #ffffff;
+}
+
+.form-error {
+    color: #dc2626;
+    font-size: 13px;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+.form-description {
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.primary-button {
+    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.primary-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.primary-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.secondary-button {
+    background: transparent;
+    color: #6b7280;
+    border: 1px solid rgba(34,36,38,0.12);
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.secondary-button:hover {
+    background: rgba(0,0,0,0.02);
+    color: #374151;
+}
+
+.danger-button {
+    background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.danger-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.danger-section {
+    border: 1px solid rgba(220, 38, 38, 0.2);
+    background: linear-gradient(180deg, #fef2f2 0%, #ffffff 100%);
+}
+
+.danger-title {
+    color: #dc2626;
+}
+
+.success-message {
+    background: #ecfdf5;
+    color: #065f46;
+    border: 1px solid rgba(6,95,70,0.1);
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Modal styles */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    padding: 20px;
+}
+
+.modal-content {
+    background: linear-gradient(180deg, #ffffff 0%, #f3f4f6 60%, #e9ebee 100%);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 20px 40px rgba(14,18,22,0.2);
+    border: 1px solid rgba(34,36,38,0.06);
+    width: 100%;
+    max-width: 400px;
+}
+
+.modal-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 16px;
+}
+
+.modal-description {
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-content {
+        padding: 0 16px;
+    }
+    
+    .profile-section {
+        padding: 20px;
+    }
+    
+    .form-input {
+        max-width: 100%;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .primary-button,
+    .secondary-button,
+    .danger-button {
+        width: 100%;
+        justify-content: center;
+    }
+}

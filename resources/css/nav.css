@@ -1,12 +1,37 @@
 nav{
     width: 100vw;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around; 
     align-items: center;
-    margin-top: 30px;
+    margin-top: -30px;
+    padding: 0 40px; 
+}
+
+.logo-container {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo {
+    height: 180px;
+    width: auto;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
 }
 
 .nav{
+    display: flex;
+    justify-content: center;
     width: fit-content;
     padding-left: 40px;
     padding-right: 40px;
@@ -17,12 +42,10 @@ nav{
         #1f2a33 65%,
         #0f1720 100%);
     color: #ffffff;
-    display: flex;
-    justify-content: center;
     align-items: center;
     gap: 30px;
     border-radius: 12px;
-    margin-left: 500px;
+    margin: 0; /* SUPPRIMÉ: margin-left */
     border: 1px solid rgba(255,255,255,0.06);
     box-shadow: 0 8px 20px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
     backdrop-filter: blur(4px);
@@ -34,9 +57,12 @@ nav{
     box-shadow: 0 14px 32px rgba(2,6,23,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
-/* same look for auth block */
+/* Auth block à droite - MODIFIÉ */
 .log{
-    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 215px;
     padding-left: 40px;
     padding-right: 40px;
     height: 40px;
@@ -46,15 +72,13 @@ nav{
         #1f2a33 65%,
         #0f1720 100%);
     color: #ffffff;
-    display: flex;
-    justify-content: center;
     align-items: center;
     gap: 30px;
     border-radius: 12px;
     border: 1px solid rgba(255,255,255,0.06);
     box-shadow: 0 8px 20px rgba(2,6,23,0.45);
     transition: transform .12s ease;
-    margin-right: 40px;
+    margin: 0; /* SUPPRIMÉ: margin-right */
 }
 
 .link {
@@ -78,12 +102,45 @@ nav{
     opacity: 0.95;
 }
 
+/* User toggle button styling */
+.user-toggle {
+    background: transparent;
+    border: none;
+    color: #f8fafc;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.user-toggle:hover {
+    background: rgba(255,255,255,0.05);
+    color: #ffd166;
+}
+
+.caret {
+    transition: transform 0.2s ease;
+    font-size: 12px;
+}
+
+.caret.open {
+    transform: rotate(180deg);
+}
+
 .menu-overlay {
     position: fixed;
     inset: 0;
     z-index: 30;
     background: transparent;
     cursor: default;
+}
+
+.drop{
+    border-bottom: 1px solid #eef6ff;
 }
 
 .user-dropdown {
@@ -100,6 +157,30 @@ nav{
     z-index: 40;
     transform-origin: top right;
     animation: dropdown-in .12s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dropdown-item {
+    width: 100%;
+    padding: 8px 12px;
+    text-align: center;
+    color: #eef6ff;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.dropdown-item:hover {
+    background: rgba(255,255,255,0.05);
+    color: #ffd166;
+}
+
+.dropdown-item.danger:hover {
+    background: rgba(220, 38, 38, 0.1);
+    color: #fca5a5;
 }
 
 @keyframes dropdown-in {
@@ -107,9 +188,76 @@ nav{
     to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+/* Responsive */
+@media (max-width: 1024px) {
+    nav {
+        padding: 0 20px;
+    }
+    
+    .nav {
+        gap: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    .log {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        gap: 16px;
+        padding: 0 16px;
+    }
+    
+    .logo-container,
+    .nav,
+    .log {
+        flex: none;
+    }
+    
+    .nav {
+        gap: 16px;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    
+    .log {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    
+    .user-dropdown {
+        right: 8px;
+        min-width: 150px;
+    }
+}
+
 @media (max-width: 640px) {
-    .nav { padding-left: 16px; padding-right: 16px; margin-top: 18px; }
-    .nav, .log { margin-left: 0; margin-right: 12px; }
-    .user-dropdown { right: 8px; min-width: 150px; }
-    .user-toggle { padding: 7px 10px; font-size: 14px; }
+    .nav {
+        gap: 12px;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+    
+    .log {
+        gap: 12px;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+    
+    .link {
+        padding-right: 12px;
+    }
+    
+    .adminlink {
+        padding-left: 12px;
+    }
+    
+    .logo {
+        height: 32px;
+    }
 }

@@ -132,7 +132,7 @@ function CarShow({ cars: car }) {
                         <h3>Vendeur</h3>
                         <div className="seller-info">
                             <p> {car.user.first_name} {car.user.name}</p>
-                            <button className="contact-btn">Contacter le vendeur</button>
+                            <Link href={route('mail')}><button className="contact-btn">Contacter le vendeur</button></Link>
                             <p className="contact-note">Connectez-vous pour contacter le vendeur</p>
                         </div>
                     </div>

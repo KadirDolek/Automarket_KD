@@ -6,6 +6,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\DemoMail;
 use Inertia\Inertia;
 
 Route::get('/Welcome', function () {
@@ -20,6 +22,13 @@ Route::get('/Welcome', function () {
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+
+Route::get('/mail-test', function () {
+    Mail::to('bataganiramani@gmail.com')->send(new DemoMail());
+    return 'Mail envoyé.';
+})->name('mail');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
