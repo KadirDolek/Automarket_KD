@@ -35,19 +35,13 @@ function CarShow({ cars: car }) {
     car.user_id === auth.user.id || 
     (auth.user.role && ['admin', 'moderateur'].includes(auth.user.role))
 )
-
-    console.log('Auth user:', auth.user)
-    console.log('Car user_id:', car.user_id)
-    console.log('User role:', auth.user?.role)
-    console.log('Can edit:', canEdit)
-
     return (
         <div className="car-show">
          <div className='navigation'>
                  <Nav auth={auth}/>
         </div>
             <div className="back-button">
-                <Link href="/home">← Retour au catalogue</Link>
+                <Link href="/">← Retour au catalogue</Link>
             </div>
 
             <div className="car-content">

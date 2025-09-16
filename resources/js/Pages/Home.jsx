@@ -25,6 +25,15 @@ function Home({ cars, brands, fuels, currentBrand, currentFuel, auth }) {
         router.get('/', {}, { preserveState: true, replace: true })
     }
 
+    // CORRIGÉ: Vérifier si l'utilisateur peut éditer
+    const canEdit = (car) => {
+        const userRole = auth?.user?.role?.role;
+        const isOwner = auth?.user?.id === car.user_id;
+        const isAdminOrMod = ['admin', 'modo'].includes(userRole);
+        
+        return isOwner || isAdminOrMod;
+    }
+
     return (
         <div className='home'>
             <div className='navigation'>

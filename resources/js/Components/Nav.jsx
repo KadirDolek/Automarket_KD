@@ -5,13 +5,16 @@ import '../../css/nav.css'
 function Nav({ auth }) {
     const [open, setOpen] = useState(false)
 
+    // CORRIGÉ: Vérifier si l'utilisateur est admin OU modo
+    const isAdminOrMod = auth?.user?.role?.role && ['admin', 'modo'].includes(auth.user.role.role);
+
     return (
         <nav>
             <div className='nav'>
-                <Link className='link' href={route('home')}>Home</Link>
-                <Link className='link' href={route('create')}>Vendez Votre Voiture</Link>
-                {auth?.user?.role?.role === 'admin' && (
-                    <Link className='link' href="/admin/users">Admin Panel</Link>
+                <Link className='link' href={route('home')}>Catalogue</Link>
+                <Link href={route('create')}>Vendez Votre Voiture</Link>
+                {isAdminOrMod && (
+                    <Link className='adminlink' href="/admin/users">Admin Panel</Link>
                 )}
             </div>
 

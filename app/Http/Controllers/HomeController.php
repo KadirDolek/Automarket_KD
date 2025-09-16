@@ -113,8 +113,26 @@ class HomeController extends Controller
         return redirect()->route('show', $car->id)->with('success', 'Votre voiture a été ajoutée avec succès !');
     }
 
-    public function carEdit($id){
-        $car = Car::with(['brand', 'fuel', 'user'])->findOrFail($id);
+    private function authorizeCarAccess(Car $car)
+    {
+        $user = auth()->user();
+        
+        // CORRIGÉ: Admin ET modo peuvent modifier toutes les annonces
+        if ($user && $user->role && in_array($user->role->role, ['admin', 'modo'])) {
+            return true;
+        }
+        
+        // Sinon, seul le propriétaire peut modifier
+        if ($car->user_id !== $user->id) {
+            abort(403, 'Vous n\'avez pas l\'autorisation de modifier cette voiture.');
+        }
+        
+        return true;
+    }
+
+    public function carEdit($id)
+    {
+        $car = Car::with(['brand', 'fuel'])->findOrFail($id);
         
         $this->authorizeCarAccess($car);
         
@@ -128,13 +146,11 @@ class HomeController extends Controller
         ]);
     }
 
-    public function carUpdate(Request $request, $id){
+    public function carUpdate(Request $request, $id)
+    {
         $car = Car::findOrFail($id);
         
         $this->authorizeCarAccess($car);
-        
-        // Debug pour voir ce qui arrive
-        \Log::info('Request data:', $request->all());
         
         $validated = $request->validate([
             'brand_id' => 'required|exists:brands,id',
@@ -145,7 +161,6 @@ class HomeController extends Controller
             'kilometrage' => 'required|integer|min:0',
             'abs' => 'boolean',
             
-            // Images complètement optionnelles
             'image1_path' => 'nullable|string|max:2048',
             'image1_file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'image2_path' => 'nullable|string|max:2048',
@@ -187,8 +202,7 @@ class HomeController extends Controller
                 $validated[$pathKey] = Storage::url($path);
                 
             } else if (!empty($validated[$pathKey]) && $validated[$pathKey] !== $car->{$pathKey}) {
-      
-                
+                // Garde la nouvelle URL
             } else {
                 $validated[$pathKey] = $car->{$pathKey};
             }
@@ -209,7 +223,8 @@ class HomeController extends Controller
         return redirect()->route('show', $car->id)->with('success', 'Voiture mise à jour avec succès !');
     }
 
-    public function carDestroy($id) {
+    public function carDestroy($id)
+    {
         $car = Car::findOrFail($id);
         
         $this->authorizeCarAccess($car);
@@ -223,16 +238,12 @@ class HomeController extends Controller
         
         $car->delete();
         
-        return redirect()->route('home')->with('success', 'Voiture supprimée avec succès !');
-    }
-
-
-    private function authorizeCarAccess(Car $car) {
+        // Rediriger intelligemment selon le rôle
         $user = auth()->user();
-        
-        if ($car->user_id !== $user->id && 
-            !in_array($user->role->name, ['admin', 'moderateur'])) {
-            abort(403, 'Vous n\'avez pas l\'autorisation de modifier cette voiture.');
+        if ($user && $user->role && in_array($user->role->role, ['admin', 'modo'])) {
+            return redirect()->route('dashboard')->with('success', 'Annonce supprimée avec succès !');
         }
+        
+        return redirect()->route('home')->with('success', 'Voiture supprimée avec succès !');
     }
 }

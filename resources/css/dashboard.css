@@ -1,0 +1,220 @@
+/* layout */
+.dashboard {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(107deg,
+        rgba(250,250,251,1) 0%,
+        rgb(208,209,211) 35%,
+        rgb(216,218,221) 70%,
+        rgb(192,193,194) 100%);
+    color: #0b0b0c;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+.navigation {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+/* main content */
+.dashboard-content {
+    max-width: 1100px;
+    margin: 20px auto 80px;
+    padding: 20px;
+}
+
+.dashboard-header h1 {
+    margin: 0 0 6px;
+    font-size: 28px;
+    color: #111827;
+}
+.subtitle {
+    margin: 0 0 18px;
+    color: #4b5563;
+}
+
+/* flash */
+.flash {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+.flash-success { background: #ecfdf5; color: #065f46; border: 1px solid rgba(6,95,70,0.08); }
+.flash-error { background: #fff1f2; color: #831843; border: 1px solid rgba(131,24,67,0.06); }
+
+/* panel */
+.panel {
+    background: linear-gradient(180deg, #ffffff 0%, #f3f4f6 60%, #e9ebee 100%);
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 8px 24px rgba(14,18,22,0.06);
+    border: 1px solid rgba(34,36,38,0.04);
+}
+
+/* onglets administration */
+.admin-tabs-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 2px solid #dee2e6;
+}
+
+.admin-tab-button {
+    padding: 12px 24px;
+    border: 2px solid #ced4da;
+    border-radius: 6px;
+    background-color: #ffffff;
+    color: #495057;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.admin-tab-button.active-users {
+    border-color: #007bff;
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+.admin-tab-button.active-cars {
+    border-color: #28a745;
+    background-color: #28a745;
+    color: #ffffff;
+}
+
+.admin-tab-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* debug info */
+.debug-info {
+    padding: 8px 12px;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    font-size: 12px;
+    font-family: 'Courier New', monospace;
+    color: #6c757d;
+}
+
+/* contenu des onglets */
+.tab-content {
+    margin-top: 16px;
+}
+
+.tab-title-users {
+    color: #007bff;
+    margin-bottom: 16px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.tab-title-cars {
+    color: #28a745;
+    margin-bottom: 16px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* table */
+.table-wrap { overflow-x: auto; margin-top: 12px; }
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+.users-table thead th {
+    text-align: left;
+    padding: 10px 12px;
+    color: #374151;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(15,20,25,0.06);
+}
+.users-table tbody td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(15,20,25,0.04);
+    vertical-align: middle;
+}
+.users-table tbody tr:hover td {
+    background: rgba(0,0,0,0.02);
+}
+
+/* actions/links */
+.action-link {
+    color: #0f172a;
+    background: transparent;
+    padding: 6px 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+.action-link:hover { 
+    text-decoration: underline;
+    background: rgba(0,0,0,0.05);
+}
+
+.action-link.danger {
+    color: #dc3545;
+}
+.action-link.danger:hover {
+    color: #a71e2a;
+    background: rgba(220,53,69,0.1);
+}
+
+/* edit form */
+.edit-panel { margin-top: 18px; }
+.edit-form { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; max-width: 420px; }
+.select {
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(34,36,38,0.08);
+    background: linear-gradient(180deg,#fff,#f7f8f9);
+    color: #111827;
+}
+.form-actions { display: flex; gap: 10px; margin-top: 8px; }
+.btn {
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    font-weight: 500;
+}
+.btn.primary {
+    background: #4f46e5;
+    color: #fff;
+}
+.btn.secondary {
+    background: transparent;
+    color: #374151;
+    border: 1px solid rgba(15,20,25,0.06);
+}
+
+/* errors */
+.form-error { color: #b91c1c; font-size: 13px; }
+
+/* responsive */
+@media (max-width: 900px) {
+    .dashboard-content { padding: 16px; margin: 12px; }
+    .users-table thead th:nth-child(2),
+    .users-table tbody td:nth-child(2) { display: none; }
+    
+    .admin-tabs-container {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .admin-tab-button {
+        padding: 10px 16px;
+        font-size: 13px;
+    }
+}
