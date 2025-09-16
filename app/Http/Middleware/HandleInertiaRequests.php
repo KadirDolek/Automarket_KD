@@ -39,7 +39,7 @@ class HandleInertiaRequests extends Middleware
                     'email' => $request->user()->email,
                     'role' => $request->user()->role ? [
                         'id' => $request->user()->role->id,
-                        'name' => $request->user()->role->name,
+                        'role' => $request->user()->role->role,
                     ] : null,
                 ] : null,
             ],
@@ -49,8 +49,8 @@ class HandleInertiaRequests extends Middleware
             ],
             'permissions' => [
                 'canCreateCar' => $request->user() ? true : false,
-                'isAdmin' => $request->user()?->role?->name === 'admin',
-                'isModerator' => in_array($request->user()?->role?->name, ['admin', 'moderateur']),
+                'isAdmin' => $request->user()?->role?->role === 'admin',
+                'isModerator' => in_array($request->user()?->role?->role, ['admin', 'moderateur']),
             ],
         ];
     }

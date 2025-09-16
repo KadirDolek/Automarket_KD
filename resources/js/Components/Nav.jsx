@@ -10,7 +10,9 @@ function Nav({ auth }) {
             <div className='nav'>
                 <Link className='link' href={route('home')}>Home</Link>
                 <Link className='link' href={route('create')}>Vendez Votre Voiture</Link>
-                <Link className='link'>Admin Panel</Link>
+                {auth?.user?.role?.role === 'admin' && (
+                    <Link className='link' href="/admin/users">Admin Panel</Link>
+                )}
             </div>
 
             {auth?.user ? (
@@ -68,7 +70,7 @@ function Nav({ auth }) {
             ) : (
                 <div className='log'>
                     <Link className='link' href={route('login')}>Login</Link>
-                    <Link className='link' href={route('register')}>Register</Link>
+                    <Link href={route('register')}>Register</Link>
                 </div>
             )}
         </nav>

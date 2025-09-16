@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -15,9 +17,9 @@ Route::get('/Welcome', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -29,6 +31,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/edit/{id}', [HomeController::class, 'carEdit'])->name('carEdit');
     Route::put('/update/{id}', [HomeController::class, 'carUpdate'])->name('carUpdate');
     Route::delete('/delete/{id}', [HomeController::class, 'carDestroy'])->name('carDestroy');
+});
+
+Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
 });
 
 Route::get('/',[HomeController::class, 'home'])->name('home');
