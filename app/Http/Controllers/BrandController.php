@@ -5,17 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class BrandController extends Controller
 {
+    public function __construct()
+    {
+        // Les permissions sont déjà gérées par le middleware 'role:admin,moderateur' dans web.php
+    }
+
     public function index()
     {
-        if (!Gate::allows('manage-brands')) {
-            abort(403, 'Accès non autorisé.');
-        }
-        
         $brands = Brand::withCount('cars')->paginate(10);
         
         return Inertia::render('Admin/Brands/Index', [
@@ -25,31 +25,20 @@ class BrandController extends Controller
 
     public function create()
     {
-        if (!Gate::allows('manage-brands')) {
-            abort(403, 'Accès non autorisé.');
-        }
-        
         return Inertia::render('Admin/Brands/Create');
     }
 
     public function show(Brand $brand)
-{
-    if (!Gate::allows('manage-brands')) {
-        abort(403, 'Accès non autorisé.');
+    {
+        $brand->load('cars');
+        
+        return Inertia::render('Admin/Brands/Show', [
+            'brand' => $brand
+        ]);
     }
-    
-    $brand->load('cars');
-    
-    return Inertia::render('Admin/Brands/Show', [
-        'brand' => $brand
-    ]);
-}
+
     public function store(Request $request)
     {
-        if (!Gate::allows('manage-brands')) {
-            abort(403, 'Accès non autorisé.');
-        }
-        
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:brands',
             'logo' => 'nullable|image|max:2048'
@@ -67,10 +56,6 @@ class BrandController extends Controller
 
     public function edit(Brand $brand)
     {
-        if (!Gate::allows('manage-brands')) {
-            abort(403, 'Accès non autorisé.');
-        }
-        
         return Inertia::render('Admin/Brands/Edit', [
             'brand' => $brand
         ]);
@@ -78,27 +63,17 @@ class BrandController extends Controller
 
     public function update(Request $request, Brand $brand)
     {
-        // Vérifier l'autorisation
-        if (!Gate::allows('manage-brands')) {
-            abort(403, 'Accès non autorisé');
-        }
-
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:brands,name,' . $brand->id,
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
-        // Gérer le logo
         if ($request->hasFile('logo')) {
-            // Supprimer l'ancien logo s'il existe
             if ($brand->logo && Storage::exists($brand->logo)) {
                 Storage::delete($brand->logo);
             }
-
-            // Stocker le nouveau logo
             $validated['logo'] = $request->file('logo')->store('brands', 'public');
         } elseif ($request->has('remove_logo')) {
-            // Supprimer le logo existant
             if ($brand->logo && Storage::exists($brand->logo)) {
                 Storage::delete($brand->logo);
             }
@@ -113,18 +88,11 @@ class BrandController extends Controller
 
     public function destroy(Brand $brand)
     {
-        // Vérifier l'autorisation
-        if (!Gate::allows('manage-brands')) {
-            abort(403, 'Accès non autorisé');
-        }
-
-        // Vérifier si la marque a des voitures associées
         if ($brand->cars()->count() > 0) {
             return redirect()->route('admin.brands.index')
                 ->with('error', 'Impossible de supprimer cette marque car elle est associée à des véhicules.');
         }
 
-        // Supprimer le logo s'il existe
         if ($brand->logo && Storage::exists($brand->logo)) {
             Storage::delete($brand->logo);
         }

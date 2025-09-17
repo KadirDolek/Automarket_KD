@@ -7,21 +7,20 @@ use App\Models\Role;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        // Les permissions sont déjà gérées par le middleware 'role:admin,moderateur' dans web.php
+    }
+
     /**
      * Afficher la liste des utilisateurs
      */
     public function index()
     {
-        // Vérifier que l'utilisateur a la permission de gérer les utilisateurs
-        if (!Gate::allows('manage-users')) {
-            abort(403, 'Accès non autorisé.');
-        }
-        
         $users = User::with('role')->paginate(10);
         $roles = Role::all();
         
@@ -36,10 +35,6 @@ class UserController extends Controller
      */
     public function create()
     {
-        if (!Gate::allows('manage-users')) {
-            abort(403, 'Accès non autorisé.');
-        }
-        
         $roles = Role::all();
         
         return Inertia::render('Admin/Users/Create', [
@@ -52,10 +47,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        if (!Gate::allows('manage-users')) {
-            abort(403, 'Accès non autorisé.');
-        }
-        
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
@@ -82,27 +73,19 @@ class UserController extends Controller
      * Afficher les détails d'un utilisateur
      */
     public function show(User $user)
-        {
-            if (!Gate::allows('manage-users')) {
-                abort(403, 'Accès non autorisé.');
-            }
-            
-            $user->load('role', 'cars.brand', 'cars.fuel');
-            
-            return Inertia::render('Admin/Users/Show', [
-                'user' => $user
-            ]);
-        }
+    {
+        $user->load('role', 'cars.brand', 'cars.fuel');
+        
+        return Inertia::render('Admin/Users/Show', [
+            'user' => $user
+        ]);
+    }
 
     /**
      * Afficher le formulaire d'édition d'un utilisateur
      */
     public function edit(User $user)
     {
-        if (!Gate::allows('manage-users')) {
-            abort(403, 'Accès non autorisé.');
-        }
-        
         $roles = Role::all();
         
         return Inertia::render('Admin/Users/Edit', [
@@ -111,13 +94,8 @@ class UserController extends Controller
         ]);
     }
 
-     public function update(Request $request, User $user)
+    public function update(Request $request, User $user)
     {
-        // Vérifier l'autorisation
-        if (!Gate::allows('manage-users')) {
-            abort(403, 'Accès non autorisé');
-        }
-
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
@@ -143,11 +121,6 @@ class UserController extends Controller
 
     public function updateRole(Request $request, User $user)
     {
-        // Vérifier l'autorisation
-        if (!Gate::allows('manage-users')) {
-            abort(403, 'Accès non autorisé');
-        }
-
         // Empêcher un utilisateur de modifier son propre rôle
         if ($request->user()->id === $user->id) {
             return response()->json([
@@ -168,11 +141,6 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        // Vérifier l'autorisation
-        if (!Gate::allows('manage-users')) {
-            abort(403, 'Accès non autorisé');
-        }
-
         // Empêcher un utilisateur de se supprimer lui-même
         if (auth()->id() === $user->id) {
             return redirect()->route('admin.users.index')

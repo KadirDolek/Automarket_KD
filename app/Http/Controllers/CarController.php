@@ -8,11 +8,15 @@ use App\Models\Fuel;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
-
 
 class CarController extends Controller
 {
+    public function __construct()
+    {
+        // Les permissions sont gérées dans web.php et dans les méthodes individuelles
+        // Pas besoin de middleware ici car déjà défini dans les routes
+    }
+
     public function index(Request $request)
     {
         $query = Car::with(['brand', 'fuel', 'user']);
@@ -68,24 +72,21 @@ class CarController extends Controller
         ]);
     }
 
- public function create()
-{
-    $brands = Brand::all();
-    $fuels = Fuel::all();
-    $types = ['4X4', 'SUV', 'BREAK', 'LUDOSPACE', 'VAN', 'BERLINE'];
-    $etats = ['neuf', 'occasion'];
-    $jantes = ['16', '17', '18', '19', 'NONE'];
-    $selleries = ['Cuir', 'Tissus'];
-    $cylindrees = ['1l', '1.2l', '1.5l', '1.8l', '2l', '3l', 'NONE'];
+    public function create()
+    {
+        $brands = Brand::all();
+        $fuels = Fuel::all();
+        $types = ['4X4', 'SUV', 'BREAK', 'LUDOSPACE', 'VAN', 'BERLINE'];
+        $etats = ['neuf', 'occasion'];
+        $jantes = ['16', '17', '18', '19', 'NONE'];
+        $selleries = ['Cuir', 'Tissus'];
+        $cylindrees = ['1l', '1.2l', '1.5l', '1.8l', '2l', '3l', 'NONE'];
 
-    return Inertia::render('Cars/Create', compact('brands','fuels','types','etats','jantes','selleries','cylindrees'));
-}
-
+        return Inertia::render('Cars/Create', compact('brands','fuels','types','etats','jantes','selleries','cylindrees'));
+    }
 
     public function store(Request $request)
     {
-        
-        
         $validated = $request->validate([
             'brand_id' => 'required|exists:brands,id',
             'fuel_id' => 'required|exists:fuels,id',
@@ -120,76 +121,82 @@ class CarController extends Controller
         
         return redirect()->route('cars.show', $car)->with('success', 'Véhicule ajouté avec succès!');
     }
-    public function edit(Car $car)
-{
-    if (!Gate::allows('edit-cars', $car)) {
-        abort(403, 'Action non autorisée.');
-    }
-    
-    $brands = Brand::all();
-    $fuels = Fuel::all();
-    $types = ['4X4', 'SUV', 'BREAK', 'LUDOSPACE', 'VAN', 'BERLINE'];
-    $etats = ['neuf', 'occasion'];
-    $jantes = ['16', '17', '18', '19', 'NONE'];
-    $selleries = ['Cuir', 'Tissus'];
-    $cylindrees = ['1l', '1.2l', '1.5l', '1.8l', '2l', '3l', 'NONE'];
-    
-    return Inertia::render('Cars/Edit', [
-        'car' => $car->load(['brand', 'fuel']),
-        'brands' => $brands,
-        'fuels' => $fuels,
-        'types' => $types,
-        'etats' => $etats,
-        'jantes' => $jantes,
-        'selleries' => $selleries,
-        'cylindrees' => $cylindrees
-    ]);
-}
 
-public function update(Request $request, Car $car)
-{
-    
-    
-    $validated = $request->validate([
-        'brand_id' => 'required|exists:brands,id',
-        'fuel_id' => 'required|exists:fuels,id',
-        'model' => 'required|string|max:255',
-        'etat' => 'required|in:neuf,occasion',
-        'annee' => 'required|integer|between:1975,'.date('Y'),
-        'kilometrage' => 'required|integer|min:0',
-        'abs' => 'boolean',
-        'jantes' => 'required|in:16,17,18,19,NONE',
-        'sellerie' => 'required|in:Cuir,Tissus',
-        'couleur' => 'required|string|max:7',
-        'type' => 'required|in:4X4,SUV,BREAK,LUDOSPACE,VAN,BERLINE',
-        'cylindree' => 'required|numeric|in:1,1.2,1.5,1.8,2,3',
-        'prix' => 'required|numeric|min:0',
-        'description' => 'required|string',
-        'image1_path' => 'nullable|image|max:2048',
-        'image2_path' => 'nullable|image|max:2048',
-        'image3_path' => 'nullable|image|max:2048',
-        'image4_path' => 'nullable|image|max:2048',
-    ]);
-    
-    $imagePaths = [];
-    for ($i = 1; $i <= 4; $i++) {
-        if ($request->hasFile("image{$i}_path")) {
-            // Supprimer l'ancienne image si elle existe
-            if ($car->{"image{$i}_path"}) {
-                Storage::disk('public')->delete($car->{"image{$i}_path"});
-            }
-            $imagePaths["image{$i}_path"] = $request->file("image{$i}_path")->store('cars', 'public');
+    public function edit(Car $car)
+    {
+        // Vérifier que l'utilisateur peut modifier cette voiture
+        if (!$this->canEditCar($car)) {
+            abort(403, 'Action non autorisée.');
         }
+        
+        $brands = Brand::all();
+        $fuels = Fuel::all();
+        $types = ['4X4', 'SUV', 'BREAK', 'LUDOSPACE', 'VAN', 'BERLINE'];
+        $etats = ['neuf', 'occasion'];
+        $jantes = ['16', '17', '18', '19', 'NONE'];
+        $selleries = ['Cuir', 'Tissus'];
+        $cylindrees = ['1l', '1.2l', '1.5l', '1.8l', '2l', '3l', 'NONE'];
+        
+        return Inertia::render('Cars/Edit', [
+            'car' => $car->load(['brand', 'fuel']),
+            'brands' => $brands,
+            'fuels' => $fuels,
+            'types' => $types,
+            'etats' => $etats,
+            'jantes' => $jantes,
+            'selleries' => $selleries,
+            'cylindrees' => $cylindrees
+        ]);
     }
-    
-    $car->update(array_merge($validated, $imagePaths));
-    
-    return redirect()->route('cars.show', $car)->with('success', 'Véhicule modifié avec succès!');
-}
+
+    public function update(Request $request, Car $car)
+    {
+        // Vérifier que l'utilisateur peut modifier cette voiture
+        if (!$this->canEditCar($car)) {
+            abort(403, 'Action non autorisée.');
+        }
+        
+        $validated = $request->validate([
+            'brand_id' => 'required|exists:brands,id',
+            'fuel_id' => 'required|exists:fuels,id',
+            'model' => 'required|string|max:255',
+            'etat' => 'required|in:neuf,occasion',
+            'annee' => 'required|integer|between:1975,'.date('Y'),
+            'kilometrage' => 'required|integer|min:0',
+            'abs' => 'boolean',
+            'jantes' => 'required|in:16,17,18,19,NONE',
+            'sellerie' => 'required|in:Cuir,Tissus',
+            'couleur' => 'required|string|max:7',
+            'type' => 'required|in:4X4,SUV,BREAK,LUDOSPACE,VAN,BERLINE',
+            'cylindree' => 'required|numeric|in:1,1.2,1.5,1.8,2,3',
+            'prix' => 'required|numeric|min:0',
+            'description' => 'required|string',
+            'image1_path' => 'nullable|image|max:2048',
+            'image2_path' => 'nullable|image|max:2048',
+            'image3_path' => 'nullable|image|max:2048',
+            'image4_path' => 'nullable|image|max:2048',
+        ]);
+        
+        $imagePaths = [];
+        for ($i = 1; $i <= 4; $i++) {
+            if ($request->hasFile("image{$i}_path")) {
+                if ($car->{"image{$i}_path"}) {
+                    Storage::disk('public')->delete($car->{"image{$i}_path"});
+                }
+                $imagePaths["image{$i}_path"] = $request->file("image{$i}_path")->store('cars', 'public');
+            }
+        }
+        
+        $car->update(array_merge($validated, $imagePaths));
+        
+        return redirect()->route('cars.show', $car)->with('success', 'Véhicule modifié avec succès!');
+    }
+
     public function destroy(Car $car)
     {
-           
-        if (!Gate::allows('delete-cars')) {
+        // Vérifier que seuls admin et modérateur peuvent supprimer
+        $user = auth()->user();
+        if (!$user->isAdmin() && !$user->isModerator()) {
             abort(403, 'Action non autorisée.');
         }
         
@@ -200,8 +207,6 @@ public function update(Request $request, Car $car)
 
     public function contactSeller(Car $car, Request $request)
     {
-       
-        
         $validated = $request->validate([
             'message' => 'required|string|min:10|max:1000'
         ]);
@@ -210,5 +215,25 @@ public function update(Request $request, Car $car)
         // Mail::to($car->user->email)->send(new ContactSellerMail(auth()->user(), $car, $validated['message']));
         
         return back()->with('success', 'Votre message a été envoyé au vendeur.');
+    }
+
+    /**
+     * Vérifier si l'utilisateur peut modifier la voiture
+     */
+    private function canEditCar(Car $car)
+    {
+        $user = auth()->user();
+        
+        // Si c'est le propriétaire de la voiture
+        if ($car->user_id === $user->id) {
+            return true;
+        }
+        
+        // Si c'est un admin ou modérateur
+        if ($user->isAdmin() || $user->isModerator()) {
+            return true;
+        }
+        
+        return false;
     }
 }
