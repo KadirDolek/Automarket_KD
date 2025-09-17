@@ -1,5 +1,5 @@
 nav{
-    width: 100vw;
+    width: auto;
     display: flex;
     justify-content: space-around; 
     align-items: center;
@@ -37,15 +37,15 @@ nav{
     padding-right: 40px;
     height: 40px;
     background: linear-gradient(90deg,
-        #0b1220 0%,
+        #2c3955 0%,
         #131a23 35%,
         #1f2a33 65%,
-        #0f1720 100%);
+        #253649 100%);
     color: #ffffff;
     align-items: center;
     gap: 30px;
     border-radius: 12px;
-    margin: 0; /* SUPPRIMÉ: margin-left */
+    margin: 0;
     border: 1px solid rgba(255,255,255,0.06);
     box-shadow: 0 8px 20px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
     backdrop-filter: blur(4px);
@@ -53,8 +53,8 @@ nav{
 }
 
 .nav:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 14px 32px rgba(2,6,23,0.7), inset 0 1px 0 rgba(255,255,255,0.05);
+    
+    box-shadow: 0 14px 32px rgba(75, 92, 167, 0.7), inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
 /* Auth block à droite - MODIFIÉ */
@@ -67,10 +67,10 @@ nav{
     padding-right: 40px;
     height: 40px;
     background: linear-gradient(90deg,
-        #0b1220 0%,
+        #26375a 0%,
         #131a23 35%,
         #1f2a33 65%,
-        #0f1720 100%);
+        #36506d 100%);
     color: #ffffff;
     align-items: center;
     gap: 30px;
@@ -78,7 +78,7 @@ nav{
     border: 1px solid rgba(255,255,255,0.06);
     box-shadow: 0 8px 20px rgba(2,6,23,0.45);
     transition: transform .12s ease;
-    margin: 0; /* SUPPRIMÉ: margin-right */
+    margin: 0;
 }
 
 .link {
@@ -100,6 +100,7 @@ nav{
 .nav a:hover, .log a:hover {
     color: #ffd166;
     opacity: 0.95;
+    scale: 1.06;
 }
 
 /* User toggle button styling */

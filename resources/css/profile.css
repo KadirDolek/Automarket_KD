@@ -1,244 +1,235 @@
 .profile-container {
-    min-height: 100vh;
-    background: linear-gradient(107deg,
-        rgba(250,250,251,1) 0%,
-        rgb(208,209,211) 35%,
-        rgb(216,218,221) 70%,
-        rgb(192,193,194) 100%);
-    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    padding: 20px 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 40px 0;
 }
 
 .profile-header {
-    max-width: 1200px;
-    margin: 0 auto 32px;
-    padding: 0 20px;
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  padding: 0 20px;
 }
 
 .profile-title {
-    font-size: 28px;
-    font-weight: 700;
-    color: #111827;
-    margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin: 0 0 8px;
+}
+
+.profile-subtitle {
+  color: var(--secondary);
+  font-size: 1.1rem;
+  margin: 0;
 }
 
 .profile-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
 }
 
 .profile-section {
-    background: linear-gradient(180deg, #ffffff 0%, #f3f4f6 60%, #e9ebee 100%);
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 8px 24px rgba(14,18,22,0.06);
-    border: 1px solid rgba(34,36,38,0.04);
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 32px;
+  box-shadow: var(--card-shadow);
 }
 
 .section-title {
-    font-size: 20px;
-    font-weight: 600;
-    color: #111827;
-    margin: 0 0 20px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid rgba(34,36,38,0.08);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin: 0 0 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e2e8f0;
 }
 
 .form-group {
-    margin-bottom: 20px;
+  margin-bottom: 24px;
+  max-width: 500px;
 }
 
 .form-label {
-    display: block;
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 6px;
-    font-size: 14px;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--dark);
 }
 
 .form-input {
-    width: 100%;
-    padding: 12px 16px;
-    border-radius: 10px;
-    border: 1px solid rgba(34,36,38,0.12);
-    background: linear-gradient(180deg, #fff, #f9fafb);
-    color: #111827;
-    font-size: 16px;
-    transition: all 0.2s ease;
-    box-sizing: border-box;
-    max-width: 400px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: var(--border-radius);
+  font-size: 16px;
+  transition: border-color 0.3s ease;
 }
 
 .form-input:focus {
-    outline: none;
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-    background: #ffffff;
+  outline: none;
+  border-color: var(--primary);
 }
 
 .form-error {
-    color: #dc2626;
-    font-size: 13px;
-    margin-top: 4px;
-    font-weight: 500;
+  color: var(--danger);
+  font-size: 14px;
+  margin-top: 4px;
 }
 
 .form-description {
-    color: #6b7280;
-    font-size: 14px;
-    margin-bottom: 16px;
-    line-height: 1.5;
+  color: var(--secondary);
+  font-size: 14px;
+  margin-bottom: 16px;
+  line-height: 1.6;
 }
 
 .form-actions {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    margin-top: 20px;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-top: 24px;
+  flex-wrap: wrap;
 }
 
 .primary-button {
-    background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s ease;
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .primary-button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  background: var(--primary-dark);
+  transform: translateY(-2px);
 }
 
 .primary-button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .secondary-button {
-    background: transparent;
-    color: #6b7280;
-    border: 1px solid rgba(34,36,38,0.12);
-    padding: 12px 20px;
-    border-radius: 10px;
-    font-weight: 500;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s ease;
+  background: transparent;
+  color: var(--secondary);
+  border: 2px solid #e2e8f0;
+  padding: 14px 28px;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .secondary-button:hover {
-    background: rgba(0,0,0,0.02);
-    color: #374151;
+  background: #f8fafc;
+  color: var(--dark);
 }
 
 .danger-button {
-    background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s ease;
+  background: var(--danger);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .danger-button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+  background: #dc2626;
+  transform: translateY(-2px);
 }
 
 .danger-section {
-    border: 1px solid rgba(220, 38, 38, 0.2);
-    background: linear-gradient(180deg, #fef2f2 0%, #ffffff 100%);
+  border: 2px solid #fecaca;
+  background: linear-gradient(135deg, #fef2f2 0%, #fff 100%);
 }
 
 .danger-title {
-    color: #dc2626;
+  color: var(--danger);
 }
 
 .success-message {
-    background: #ecfdf5;
-    color: #065f46;
-    border: 1px solid rgba(6,95,70,0.1);
-    padding: 12px 16px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    font-weight: 500;
+  background: #d1fae5;
+  color: #065f46;
+  border: 2px solid #a7f3d0;
+  padding: 16px;
+  border-radius: var(--border-radius);
+  margin-bottom: 24px;
+  font-weight: 600;
 }
 
-/* Modal styles */
 .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 50;
-    padding: 20px;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
 }
 
 .modal-content {
-    background: linear-gradient(180deg, #ffffff 0%, #f3f4f6 60%, #e9ebee 100%);
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 20px 40px rgba(14,18,22,0.2);
-    border: 1px solid rgba(34,36,38,0.06);
-    width: 100%;
-    max-width: 400px;
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 32px;
+  box-shadow: var(--card-shadow);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
 }
 
 .modal-title {
-    font-size: 18px;
-    font-weight: 600;
-    color: #111827;
-    margin: 0 0 16px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin: 0 0 16px;
 }
 
-.modal-description {
-    color: #6b7280;
-    font-size: 14px;
-    margin-bottom: 20px;
-    line-height: 1.5;
+.modal-text {
+  color: var(--secondary);
+  margin-bottom: 32px;
+  line-height: 1.6;
 }
 
-/* Responsive */
+.modal-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 @media (max-width: 768px) {
-    .profile-content {
-        padding: 0 16px;
-    }
-    
-    .profile-section {
-        padding: 20px;
-    }
-    
-    .form-input {
-        max-width: 100%;
-    }
-    
-    .form-actions {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .primary-button,
-    .secondary-button,
-    .danger-button {
-        width: 100%;
-        justify-content: center;
-    }
+  .profile-content {
+    gap: 24px;
+  }
+  
+  .profile-section {
+    padding: 24px;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .primary-button,
+  .secondary-button,
+  .danger-button {
+    width: 100%;
+  }
+  
+  .modal-actions {
+    flex-direction: column;
+  }
 }

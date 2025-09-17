@@ -1,6 +1,5 @@
 import { Link } from '@inertiajs/react'
 import React, { useState } from 'react'
-import '../../css/nav.css'
 
 function Nav({ auth }) {
     const [open, setOpen] = useState(false)
@@ -8,65 +7,74 @@ function Nav({ auth }) {
     const isAdminOrMod = auth?.user?.role?.role && ['admin', 'modo'].includes(auth.user.role.role);
 
     return (
-        <nav>
+        <nav className="w-full flex justify-between items-center py-4 px-6 bg-white shadow-md">
             <div className="logo-container">
-                <Link href={route('home')} className="logo-link">
-                    <img 
-                        src="/storage/logo.png" 
-                        alt="Auto Market" 
-                        className="logo"
-                    />
+                <Link href={route('home')} className="flex items-center">
+                    <div className="h-24 w-24 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                        <img src="https://cdn.pixabay.com/objects3d/2025/07/11/04-40-10-970/render_720_720_0_340_0.png" alt="" />
+                    </div>
                 </Link>
             </div>
 
-            <div className='nav'>
-                <Link className='link' href={route('home')}>Catalogue</Link>
-                <Link href={route('create')}>Vendez Votre Voiture</Link>
+            <div className='flex items-center space-x-6 bg-gray-900 text-white px-6 py-3 rounded-lg shadow-lg'>
+                <Link 
+                    className='border-r border-gray-600 pr-6 hover:text-yellow-300 transition-colors duration-200' 
+                    href={route('home')}
+                >
+                    Catalogue
+                </Link>
+                <Link 
+                    className='hover:text-yellow-300 transition-colors duration-200' 
+                    href={route('create')}
+                >
+                    Vendez Votre Voiture
+                </Link>
                 {isAdminOrMod && (
-                    <Link className='adminlink' href="/admin/users">Admin Panel</Link>
+                    <Link 
+                        className='border-l border-gray-600 pl-6 hover:text-yellow-300 transition-colors duration-200' 
+                        href="/admin/users"
+                    >
+                        Admin Panel
+                    </Link>
                 )}
             </div>
 
             {auth?.user ? (
-                <div className='log' style={{ position: 'relative' }}>
+                <div className='relative'>
                     <button
                         type="button"
-                        className="user-toggle"
+                        className="flex items-center space-x-2 bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors duration-200"
                         aria-haspopup="true"
                         aria-expanded={open}
                         onClick={() => setOpen(v => !v)}
                     >
-                        Salut {auth.user.first_name}
-                        <span className={`caret ${open ? 'open' : ''}`} aria-hidden="true">▾</span>
+                        <span>Salut {auth.user.first_name}</span>
+                        <span className={`transform transition-transform duration-200 ${open ? 'rotate-180' : ''}`}>
+                            ▾
+                        </span>
                     </button>
 
                     {open && (
                         <>
                             <div
-                                className="menu-overlay"
+                                className="fixed inset-0 z-30"
                                 onClick={() => setOpen(false)}
                                 aria-hidden="true"
-                                style={{
-                                    position: 'fixed',
-                                    inset: 0,
-                                    zIndex: 30,
-                                    background: 'transparent'
-                                }}
                             />
 
                             <div
-                                className="user-dropdown"
+                                className="absolute right-0 top-full mt-2 z-40 bg-gray-900 text-white rounded-lg shadow-xl py-2 min-w-[180px]"
                                 role="menu"
-                                style={{
-                                    position: 'absolute',
-                                    right: 0,
-                                    top: 'calc(100% + 8px)',
-                                    zIndex: 40
-                                }}
                             >
-                                <Link className="dropdown-item drop" href={route('profile.edit')} role="menuitem">Mon profil</Link>
+                                <Link 
+                                    className="block px-4 py-2 hover:bg-gray-800 transition-colors duration-200 border-b border-gray-700" 
+                                    href={route('profile.edit')} 
+                                    role="menuitem"
+                                >
+                                    Mon profil
+                                </Link>
                                 <Link
-                                    className="dropdown-item danger"
+                                    className="block px-4 py-2 hover:bg-red-600 transition-colors duration-200"
                                     href={route('logout')}
                                     method="post"
                                     as="button"
@@ -80,9 +88,19 @@ function Nav({ auth }) {
                     )}
                 </div>
             ) : (
-                <div className='log'>
-                    <Link className='link' href={route('login')}>Login</Link>
-                    <Link href={route('register')}>Register</Link>
+                <div className='flex items-center space-x-4 bg-gray-900 text-white px-6 py-3 rounded-lg'>
+                    <Link 
+                        className='border-r border-gray-600 pr-4 hover:text-yellow-300 transition-colors duration-200' 
+                        href={route('login')}
+                    >
+                        Login
+                    </Link>
+                    <Link 
+                        className='hover:text-yellow-300 transition-colors duration-200' 
+                        href={route('register')}
+                    >
+                        Register
+                    </Link>
                 </div>
             )}
         </nav>

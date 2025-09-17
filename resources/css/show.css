@@ -1,208 +1,310 @@
-/* Harmonise le style de la page "show" avec la page Home
-   Couleurs claires / métallique + accent sombre (nav) comme couleur secondaire */
-
-:root{
-    --bg-light-1: rgba(250,250,251,1);
-    --bg-light-2: rgba(242,243,245,1);
-    --bg-light-3: rgba(231,233,236,1);
-    --metal-100: #ffffff;
-    --metal-200: #f3f4f6;
-    --accent-dark-1: #0b1220; /* couleur nav (secondaire) */
-    --accent-dark-2: #131a23;
-    --accent-dark-3: #1f2a33;
-    --accent-gold: #d4af37;
-    --text-dark: #0b0b0c;
-}
-
-/* page wrapper */
 .car-show {
-    min-height: 100vh;
-    padding: 28px 20px 60px;
-    background: linear-gradient(107deg,
-        var(--bg-light-1) 0%,
-        var(--bg-light-2) 40%,
-        var(--bg-light-3) 75%);
-    color: var(--text-dark);
-    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 40px 0;
 }
 
-/* keep nav alignment consistent with home */
-.navigation { display:flex; justify-content:center; padding-bottom: 18px; }
-
-/* back link */
-.back-button { margin: 18px 0 14px 12px; }
-.back-button a {
-    color: var(--accent-dark-1);
-    text-decoration: none;
-    font-weight: 600;
+.car-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
-.back-button a:hover { color: var(--accent-gold); }
 
-/* main grid */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  margin-bottom: 24px;
+  padding: 8px 16px;
+  border-radius: var(--border-radius);
+  transition: all 0.3s ease;
+}
+
+.back-link:hover {
+  background: #eff6ff;
+  transform: translateX(-4px);
+}
+
 .car-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 28px;
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 40px;
+  margin-bottom: 40px;
 }
 
-/* left panel - light metallic card */
-.car-left {
-    background: linear-gradient(180deg, var(--metal-100) 0%, var(--metal-200) 60%, #e9ebee 100%);
-    border-radius: 14px;
-    padding: 22px;
-    border: 1px solid rgba(15,20,25,0.06);
-    box-shadow: 0 10px 30px rgba(14,18,22,0.06);
+.car-gallery {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
 }
 
-/* image area */
-.image-carousel {
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 18px;
-    height: 420px;
-    background: #000; /* fallback while loading */
-}
-.image-carousel img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+.main-image {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
 }
 
-/* nav buttons on image */
-.nav-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: linear-gradient(90deg, var(--accent-dark-2), var(--accent-dark-3));
-    color: #eef6ff;
-    border: none;
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    font-size: 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform .12s ease, box-shadow .12s ease;
-    box-shadow: 0 8px 24px rgba(15,20,25,0.15);
-}
-.nav-btn:hover { transform: translateY(-50%) scale(1.04); box-shadow: 0 14px 34px rgba(15,20,25,0.2); }
-.nav-btn.prev { left: 14px; }
-.nav-btn.next { right: 14px; }
-
-/* main info */
-.car-main-info { padding-bottom: 16px; margin-bottom: 18px; border-bottom: 1px solid rgba(15,20,25,0.04); }
-.car-title { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
-.car-title h1 { margin:0; font-size:28px; color:var(--accent-dark-1); }
-.car-price { font-size:24px; font-weight:800; color:var(--accent-gold); margin-bottom:10px; }
-
-/* specs chips */
-.car-specs { display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
-.car-specs span {
-    background: linear-gradient(180deg,#fff,#f7f8f9);
-    padding:8px 12px;
-    border-radius:16px;
-    border:1px solid rgba(15,20,25,0.04);
-    font-size:13px;
-    color:var(--text-dark);
+.image-thumbnails {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 16px;
 }
 
-/* sections */
-.description-section, .characteristics-section, .equipment-section {
-    margin-top: 18px;
-}
-.description-section h3, .characteristics-section h3, .equipment-section h3 {
-    color: var(--accent-dark-1);
-    font-size:18px;
-    margin-bottom:10px;
-    font-weight:700;
+.thumbnail {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
 }
 
-/* specs grid */
-.specs-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:12px; margin-top:8px; }
+.thumbnail:hover,
+.thumbnail.active {
+  border-color: var(--primary);
+  transform: scale(1.05);
+}
+
+.car-details {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 32px;
+  box-shadow: var(--card-shadow);
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.car-header {
+  margin-bottom: 24px;
+}
+
+.car-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin: 0 0 8px;
+}
+
+.car-price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0 0 16px;
+}
+
+.car-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.car-badge.new {
+  background: var(--success);
+  color: white;
+}
+
+.car-badge.used {
+  background: var(--accent);
+  color: white;
+}
+
+.car-specs {
+  margin-bottom: 24px;
+}
+
+.spec-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
 .spec-item {
-    display:flex; justify-content:space-between; align-items:center;
-    padding:12px; border-radius:10px;
-    background: linear-gradient(180deg,#ffffff,#f6f7f8);
-    border:1px solid rgba(15,20,25,0.04);
-}
-.spec-label { color:#4b5563; font-size:13px; }
-.spec-value { color:var(--accent-dark-1); font-weight:700; display:flex; align-items:center; gap:8px; }
-
-/* color swatch */
-.color-swatch { width:18px; height:18px; border-radius:50%; border:2px solid rgba(15,20,25,0.06); }
-
-/* equipment items */
-.equipment-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:10px; margin-top:8px; }
-.equipment-item {
-    padding:10px; border-radius:8px;
-    background: linear-gradient(180deg,#fff,#fbfcfd);
-    border:1px solid rgba(15,20,25,0.04);
-    color:var(--text-dark);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-/* right panel - seller & financing */
-.car-right { display:flex; flex-direction:column; gap:18px; }
-.seller-section, .financing-section {
-    background: linear-gradient(180deg,#ffffff,#f7f8f9);
-    padding:18px; border-radius:12px;
-    border:1px solid rgba(15,20,25,0.06);
-    box-shadow: 0 8px 24px rgba(14,18,22,0.04);
-}
-.seller-section h3, .financing-section h3 { margin:0 0 8px; color:var(--accent-dark-1); font-size:16px; }
-
-/* contact button uses nav color */
-.contact-btn {
-    background: linear-gradient(90deg,var(--accent-dark-2),var(--accent-dark-3));
-    color: #eef6ff;
-    border: none;
-    padding: 10px 12px;
-    border-radius: 10px;
-    font-weight:700;
-    cursor:pointer;
-}
-.contact-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(15,20,25,0.12); }
-
-/* financing blocks */
-.price-info, .financing-calc {
-    display:flex; justify-content:space-between; align-items:center;
-    padding:10px; border-radius:8px; background:#fff; border:1px solid rgba(15,20,25,0.04);
-}
-.monthly-payment { color:var(--accent-dark-1); font-size:20px; font-weight:800; }
-
-/* action buttons */
-.car-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:18px; }
-.edit-btn, .delete-btn {
-    padding:10px 14px; border-radius:10px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:8px;
-}
-.edit-btn {
-    background: linear-gradient(90deg,#10b981,#059669);
-    color:#fff; border:none;
-}
-.delete-btn {
-    background: linear-gradient(90deg,#ef4444,#dc2626);
-    color:#fff; border:none;
+.spec-label {
+  font-size: 12px;
+  color: var(--secondary);
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
-/* admin badge */
-.admin-actions { margin-top:14px; padding:12px; border-radius:10px; background: linear-gradient(180deg,#fff8e6,#fff4d8); border:1px solid rgba(15,20,25,0.04); }
-.admin-badge { display:inline-block; background:var(--accent-gold); color:#111; padding:6px 12px; border-radius:12px; font-weight:700; }
+.spec-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--dark);
+}
 
-/* hover/accessible states */
-.edit-btn:focus, .delete-btn:focus, .contact-btn:focus { outline:3px solid rgba(99,102,241,0.09); outline-offset:2px; }
+.car-description {
+  margin-bottom: 32px;
+  line-height: 1.6;
+  color: var(--secondary);
+}
 
-/* animations */
-@keyframes fadeInUp { from {opacity:0; transform:translateY(12px);} to {opacity:1; transform:none;} }
-.car-left, .car-right { animation: fadeInUp .18s ease both; }
+.contact-section {
+  background: #f8fafc;
+  padding: 24px;
+  border-radius: var(--border-radius);
+  margin-bottom: 24px;
+}
 
-/* responsive */
-@media (max-width: 900px) {
-    .car-content { grid-template-columns: 1fr; gap:18px; padding:0 12px; }
-    .image-carousel { height: 320px; }
-    .back-button { margin-left: 12px; }
+.contact-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin: 0 0 16px;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--secondary);
+}
+
+.contact-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--primary);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.primary-button {
+  flex: 1;
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 16px 24px;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  text-decoration: none;
+  min-width: 140px;
+}
+
+.primary-button:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.secondary-button {
+  flex: 1;
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  padding: 16px 24px;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  text-decoration: none;
+  min-width: 140px;
+}
+
+.secondary-button:hover {
+  background: #eff6ff;
+}
+
+.car-info-section {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 32px;
+  box-shadow: var(--card-shadow);
+  margin-bottom: 40px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;
+}
+
+.info-group h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin: 0 0 16px;
+}
+
+.feature-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--secondary);
+  font-weight: 500;
+}
+
+.feature-item::before {
+  content: '✓';
+  color: var(--success);
+  font-weight: 600;
+}
+
+@media (max-width: 968px) {
+  .car-content {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .car-details {
+    position: static;
+  }
+  
+  .spec-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .image-thumbnails {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .primary-button,
+  .secondary-button {
+    width: 100%;
+  }
+  
+  .image-thumbnails {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
