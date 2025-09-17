@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Role;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -110,83 +111,82 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Mettre à jour un utilisateur
-     */
-    public function update(Request $request, User $user)
+     public function update(Request $request, User $user)
     {
+        // Vérifier l'autorisation
         if (!Gate::allows('manage-users')) {
-            abort(403, 'Accès non autorisé.');
+            abort(403, 'Accès non autorisé');
         }
-        
+
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users')->ignore($user->id),
+            ],
             'tel' => 'nullable|string|max:20',
             'role_id' => 'required|exists:roles,id'
         ]);
-        
+
+        // Empêcher un utilisateur de modifier son propre rôle
+        if ($request->user()->id === $user->id && $request->has('role_id')) {
+            return back()->withErrors(['role_id' => 'Vous ne pouvez pas modifier votre propre rôle.']);
+        }
+
         $user->update($validated);
-        
+
         return redirect()->route('admin.users.index')
             ->with('success', 'Utilisateur mis à jour avec succès.');
     }
 
-    /**
-     * Mettre à jour le rôle d'un utilisateur (méthode spécifique)
-     */
-    public function updateRole(User $user, Request $request)
+    public function updateRole(Request $request, User $user)
     {
+        // Vérifier l'autorisation
         if (!Gate::allows('manage-users')) {
-            abort(403, 'Accès non autorisé.');
+            abort(403, 'Accès non autorisé');
         }
-        
+
+        // Empêcher un utilisateur de modifier son propre rôle
+        if ($request->user()->id === $user->id) {
+            return response()->json([
+                'message' => 'Vous ne pouvez pas modifier votre propre rôle.'
+            ], 403);
+        }
+
         $validated = $request->validate([
             'role_id' => 'required|exists:roles,id'
         ]);
-        
-        $user->update($validated);
-        
-        return back()->with('success', 'Rôle utilisateur mis à jour.');
+
+        $user->update(['role_id' => $validated['role_id']]);
+
+        return response()->json([
+            'message' => 'Rôle mis à jour avec succès.'
+        ]);
     }
 
-    /**
-     * Mettre à jour le mot de passe d'un utilisateur
-     */
-    public function updatePassword(Request $request, User $user)
-    {
-        if (!Gate::allows('manage-users')) {
-            abort(403, 'Accès non autorisé.');
-        }
-        
-        $validated = $request->validate([
-            'password' => 'required|string|min:8|confirmed'
-        ]);
-        
-        $user->update([
-            'password' => Hash::make($validated['password'])
-        ]);
-        
-        return back()->with('success', 'Mot de passe mis à jour avec succès.');
-    }
-
-    /**
-     * Supprimer un utilisateur
-     */
     public function destroy(User $user)
     {
+        // Vérifier l'autorisation
         if (!Gate::allows('manage-users')) {
-            abort(403, 'Accès non autorisé.');
+            abort(403, 'Accès non autorisé');
         }
-        
+
         // Empêcher un utilisateur de se supprimer lui-même
-        if ($user->id === auth()->id()) {
-            return back()->with('error', 'Vous ne pouvez pas supprimer votre propre compte.');
+        if (auth()->id() === $user->id) {
+            return redirect()->route('admin.users.index')
+                ->with('error', 'Vous ne pouvez pas supprimer votre propre compte.');
         }
-        
+
+        // Vérifier si l'utilisateur a des voitures
+        if ($user->cars()->count() > 0) {
+            return redirect()->route('admin.users.index')
+                ->with('error', 'Impossible de supprimer cet utilisateur car il possède des véhicules.');
+        }
+
         $user->delete();
-        
+
         return redirect()->route('admin.users.index')
             ->with('success', 'Utilisateur supprimé avec succès.');
     }

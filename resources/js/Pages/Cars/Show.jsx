@@ -264,44 +264,43 @@ export default function Show({ car, monthlyPayment }) {
                                     </div>
                                 </div>
 
-                                {/* Boutons d'action */}
-                                <div className="space-y-3">
-                                    {auth?.user && (
-                                        <>
-                                            <button
-                                                onClick={() => setShowContactForm(true)}
-                                                className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold"
-                                            >
-                                                Contacter le vendeur
-                                            </button>
-                                            
-                                            {/* Bouton supprimer pour modérateurs et admins */}
-                                            {(auth.user?.role?.name === 'moderateur' || auth.user?.role?.name === 'admin') && (
-                                                <button
-                                                    onClick={handleDelete}
-                                                    className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors font-semibold"
-                                                >
-                                                    Supprimer l'annonce
-                                                </button>
-                                            )}
-
-                                        </>
-                                    )}
-                                    
-                                    {!auth?.user && (
-                                        <div className="text-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-                                            <p className="text-gray-600 dark:text-gray-400 mb-2">
-                                                Connectez-vous pour contacter le vendeur
-                                            </p>
-                                            <Link
-                                                href={route('login')}
-                                                className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                                            >
-                                                Se connecter
-                                            </Link>
-                                        </div>
-                                    )}
-                                </div>
+                                
+<div className="space-y-3">
+    {auth?.user && (
+    <>
+        <button
+            onClick={() => setShowContactForm(true)}
+            className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold"
+        >
+            Contacter le vendeur
+        </button>
+        
+        {/* Vérification que auth.user.role existe avant d'accéder à .name */}
+        {( auth.user.role?.name === 'moderateur' || auth.user.role?.name === 'admin') && (
+            <button
+                onClick={handleDelete}
+                className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors font-semibold"
+            >
+                Supprimer l'annonce
+            </button>
+        )}
+    </>
+)}
+    
+    {!auth?.user && (
+        <div className="text-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+            <p className="text-gray-600 dark:text-gray-400 mb-2">
+                Connectez-vous pour contacter le vendeur
+            </p>
+            <Link
+                href={route('login')}
+                className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+                Se connecter
+            </Link>
+        </div>
+    )}
+</div>
                             </div>
 
                             {/* Description */}

@@ -78,47 +78,59 @@ class BrandController extends Controller
 
     public function update(Request $request, Brand $brand)
     {
+        // Vérifier l'autorisation
         if (!Gate::allows('manage-brands')) {
-            abort(403, 'Accès non autorisé.');
+            abort(403, 'Accès non autorisé');
         }
-        
+
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:brands,name,' . $brand->id,
-            'logo' => 'nullable|image|max:2048'
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
-        
+
+        // Gérer le logo
         if ($request->hasFile('logo')) {
             // Supprimer l'ancien logo s'il existe
-            if ($brand->logo) {
-                Storage::disk('public')->delete($brand->logo);
+            if ($brand->logo && Storage::exists($brand->logo)) {
+                Storage::delete($brand->logo);
             }
+
+            // Stocker le nouveau logo
             $validated['logo'] = $request->file('logo')->store('brands', 'public');
+        } elseif ($request->has('remove_logo')) {
+            // Supprimer le logo existant
+            if ($brand->logo && Storage::exists($brand->logo)) {
+                Storage::delete($brand->logo);
+            }
+            $validated['logo'] = null;
         }
-        
+
         $brand->update($validated);
-        
+
         return redirect()->route('admin.brands.index')
             ->with('success', 'Marque mise à jour avec succès.');
     }
 
     public function destroy(Brand $brand)
     {
+        // Vérifier l'autorisation
         if (!Gate::allows('manage-brands')) {
-            abort(403, 'Accès non autorisé.');
+            abort(403, 'Accès non autorisé');
         }
-        
-        // Vérifier s'il y a des voitures associées à cette marque
+
+        // Vérifier si la marque a des voitures associées
         if ($brand->cars()->count() > 0) {
-            return back()->with('error', 'Impossible de supprimer cette marque car elle est utilisée par des véhicules.');
+            return redirect()->route('admin.brands.index')
+                ->with('error', 'Impossible de supprimer cette marque car elle est associée à des véhicules.');
         }
-        
+
         // Supprimer le logo s'il existe
-        if ($brand->logo) {
-            Storage::disk('public')->delete($brand->logo);
+        if ($brand->logo && Storage::exists($brand->logo)) {
+            Storage::delete($brand->logo);
         }
-        
+
         $brand->delete();
-        
+
         return redirect()->route('admin.brands.index')
             ->with('success', 'Marque supprimée avec succès.');
     }

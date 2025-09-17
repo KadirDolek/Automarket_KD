@@ -42,11 +42,17 @@ export default function Show({ user }) {
                     </h2>
                     <div className="flex space-x-2">
                         <Link
-                            href={route('admin.users.edit', user.id)}
-                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                            href={route('admin.brands.edit', brand.id)}
+                            className="flex-1 px-3 py-2 text-center bg-blue-100 text-blue-800 rounded hover:bg-blue-200 transition-colors text-sm font-medium"
                         >
                             Éditer
                         </Link>
+                        <button
+                            onClick={() => handleDelete(brand)}
+                            className="flex-1 px-3 py-2 text-center bg-red-100 text-red-800 rounded hover:bg-red-200 transition-colors text-sm font-medium"
+                        >
+                            Supprimer
+                        </button>
                         <Link
                             href={route('admin.users.index')}
                             className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
